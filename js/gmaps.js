@@ -52,7 +52,7 @@ function display_aggregated_variables(aggregations) {
     for (i = 0; i < buckets.length; i += 1) {
         select.multiSelect("addOption", {
             value: buckets[i].key,
-            text: buckets[i].key
+            text: (buckets[i].key + " (" + buckets[i].doc_count + ")")
         });
     }
 }
@@ -91,7 +91,6 @@ function request_from_filters(full_text) {
                 }
             });
         }
-
         return req;
     }
 }
@@ -185,7 +184,6 @@ function send_elasticsearch_request(gmap, full_text) {
             }
         }
     };
-
 }
 
 // -----------------------------------Map--------------------------------------
@@ -236,9 +234,7 @@ function create_info_window(hit) {
             content: content,
             disableAutoPan: false
         }
-    );;
-
-
+    );
 
     return info;
 }
