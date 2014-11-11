@@ -16,6 +16,12 @@ body {
     padding-top: 30px;
 }
 
+.form-horizontal {
+    text-align: center;
+    margin-left: 5%;
+    width: 90%;
+}
+
 #main {
     width: 100%;
     height: 100%;
@@ -31,6 +37,6 @@ body {
     padding-left: 27px;
     padding-right: 27px;
     height: 100%;
-    min-width: 20%;
+    width: 27.5%;
     float: left;
 }
