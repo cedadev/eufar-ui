@@ -25,19 +25,6 @@ String.prototype.hashCode = function () {
     return hash;
 };
 
-// ---------------------------------Array.has----------------------------------
-Array.prototype.has = function (elem) {
-    var i;
-
-    for (i = 0; i < this.length; i += 1) {
-        if (this[i] === elem) {
-            return true;
-        }
-    }
-
-    return false;
-};
-
 // ------------------------------Variable Filter-------------------------------
 function clear_aggregated_variables() {
     select = $("#multiselect").html("");
@@ -366,6 +353,17 @@ window.onload = function () {
     $("#location_search").click(
         function () {
             centre_map(map, geocoder, $("#location").val());
+        }
+    );
+
+    $("#ftext").keypress(
+        function (e) {
+            var charcode = e.charCode || e.keyCode || e.which;
+            if (charcode === 13) {
+                cleanup();
+                redraw_map(map);
+                return false;
+            }
         }
     );
 
