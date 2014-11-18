@@ -2,8 +2,8 @@
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <title>EUFAR Map Data Visualisation Tool</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <title>EUFAR Map Data Visualisation Tool</title>
 
     <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap-theme.min.css" type="text/css" />
@@ -11,6 +11,33 @@
     <link rel="stylesheet" href="./css/index.css" type="text/css" />
 </head>
 <body>
+    <div class="modal fade" id="export_modal" tabindex="-1" role="dialog" aria-labelledby="export_modal_label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="export_modal_label">Export Results</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="buffer10 text-center">
+                        <p><b>Note</b>: Only the first 500 results will be returned.</p>
+                        <button type="button" class="btn" id="raw_json">Raw JSON</button>
+                        <button type="button" class="btn" id="file_paths">File Paths</button>
+                        <button type="button" class="btn" id="dl_urls">Download URLs</button>
+                    </div>
+                    <div class="buffer30">
+                        <textarea id="results" placeholder="Results will appear here..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="main">
         <div id="sidebar">
             <div id="filter">
@@ -136,6 +163,9 @@
                         <p><strong>Mouse: </strong> <span id="mouse">123.123, 456.456</span></p>
                     </div>
                     <hr />
+                    <div class="text-center">
+                        <button type="button" id="export" class="btn" data-toggle="modal" data-target="#export_modal">Export Results</button>
+                    </div>
                 </div>
             </div>
         </div>

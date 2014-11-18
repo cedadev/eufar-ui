@@ -63,6 +63,11 @@ function request_from_multiselect() {
     }
 }
 
+// ---------------------------"Export Results" Modal---------------------------
+function update_export_results_modal(hits) {
+    $("#results").html(JSON.stringify(hits, null, "    "));
+}
+
 // -------------------------------ElasticSearch--------------------------------
 var es_url = "http://fatcat-test.jc.rl.ac.uk:9200/badc/eufar/_search";
 function request_from_filters(full_text) {
@@ -82,7 +87,7 @@ function request_from_filters(full_text) {
     }
 }
 
-function create_elasticsearch_request(gmaps_corners, full_text) {
+function create_elasticsearch_request(gmaps_corners, full_text, size) {
     var i, tmp_ne, tmp_sw, nw, se, request, tf, vars;
 
     tmp_ne = gmaps_corners.getNorthEast();
@@ -126,7 +131,7 @@ function create_elasticsearch_request(gmaps_corners, full_text) {
                 }
             }
         },
-        size: 100,
+        size: size,
     };
 
     // Add extra filters from free-text search box
@@ -150,7 +155,7 @@ function create_elasticsearch_request(gmaps_corners, full_text) {
 function send_elasticsearch_request(gmap, full_text) {
     var xhr, request, response;
 
-    request = create_elasticsearch_request(gmap.getBounds(), full_text);
+    request = create_elasticsearch_request(gmap.getBounds(), full_text, 100);
 
     // Construct and send XMLHttpRequest
     xhr = new XMLHttpRequest();
@@ -390,6 +395,63 @@ window.onload = function () {
             clear_aggregated_variables();
             cleanup();
             redraw_map(map);
+        }
+    );
+    
+    $("#raw_json").click(
+        function () {
+            req = create_elasticsearch_request(map.getBounds(), full_text, 500);
+            xhr = new XMLHttpRequest();
+            xhr.open("POST", es_url, true);
+            xhr.send(JSON.stringify(req));
+            xhr.onload = function (e) {
+                if (xhr.readyState === 4) {
+                    response = JSON.parse(xhr.responseText);
+                    update_export_results_modal(response.hits.hits);
+                }
+            }
+        }
+    );
+    
+    $("#file_paths").click(
+        function () {
+            req = create_elasticsearch_request(map.getBounds(), full_text, 500);
+            xhr = new XMLHttpRequest();
+            xhr.open("POST", es_url, true);
+            xhr.send(JSON.stringify(req));
+            xhr.onload = function (e) {
+                if (xhr.readyState === 4) {
+                    response = JSON.parse(xhr.responseText);
+                    h = response.hits.hits;
+
+                    var paths = [];
+                    for (var i = 0; i < h.length; i += 1) {
+                        paths.push(h[i]["_source"].file.path);
+                    }
+                    update_export_results_modal(paths);
+                }
+            }
+        }
+    );
+    
+    $("#dl_urls").click(
+        function () {
+            req = create_elasticsearch_request(map.getBounds(), full_text, 500);
+            xhr = new XMLHttpRequest();
+            xhr.open("POST", es_url, true);
+            xhr.send(JSON.stringify(req));
+            xhr.onload = function (e) {
+                if (xhr.readyState === 4) {
+                    response = JSON.parse(xhr.responseText);
+                    h = response.hits.hits;
+
+                    var paths = [];
+                    for (var i = 0; i < h.length; i += 1) {
+                        paths.push("http://badc.nerc.ac.uk/browse" + h[i]["_source"].file.path);
+                    }
+                    update_export_results_modal(paths);
+                }
+            }
         }
     );
 

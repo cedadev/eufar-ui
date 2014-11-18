@@ -8,6 +8,13 @@ body {
     padding: 0px;
 }
 
+textarea {
+    resize: none;
+    width: 100%;
+    height: 100%;
+    min-height: 100px;
+}
+
 .buffer10 {
     padding-top: 10px;
 }
