@@ -44,12 +44,13 @@
             <h2>Refine Search</h2>
             <p>Click an item to expand the panel.</p>
             <hr />
-                <div class="buffer10 panel-group" id="accordion_centre">
-                    <div class="panel panel-default row row-centered">
-                        <div class="panel-heading col-centered">
+                <div class="buffer10"></div>
+                <div class="panel-group" id="accordions">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion_centre" href="#collapse_centre_map">
-                                    Move Map
+                                <a data-toggle="collapse" data-parent="#accordions" href="#collapse_centre_map">
+                                    Geographical Search
                                 </a>
                             </h4>
                         </div>
@@ -60,7 +61,7 @@
                                         <div class="form-group">
                                             <label class="control-label" for="param">Centre Map on Location</label>
                                             <div class="buffer10 controls">
-                                                <input id="location" name="location" placeholder="e.g. Lake Balaton, Hungary" class="form-control input-md" type="text">
+                                                <input id="location" name="location" placeholder="e.g. Poland, or 51.5N 0.13W" class="form-control input-md" type="text">
                                             </div>
                                         </div>
 
@@ -74,14 +75,27 @@
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="panel-group row" id="accordion_filter">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion_filter" href="#collapse_filter">
-                                    Free Text Filter
+                                <a data-toggle="collapse" data-parent="#accordions" href="#collapse_temporal">
+                                    Temporal Filter
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapse_temporal" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <h1>temporal filter here</h1>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordions" href="#collapse_filter">
+                                    Keyword Search
                                 </a>
                             </h4>
                         </div>
@@ -90,7 +104,7 @@
                                 <form class="form-horizontal">
                                     <fieldset>
                                         <div class="form-group">
-                                            <label class="control-label" for="param">Full Text Filter</label>
+                                            <label class="control-label" for="param">Keyword Search</label>
                                             <div class="buffer10 controls">
                                                 <input id="ftext" name="ftext" placeholder="Any text query, e.g. 'velocity', 'safire', etc" class="form-control input-md" type="text">
                                             </div>
@@ -100,13 +114,11 @@
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="panel-group row" id="accordion_variables">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion_variables" href="#collapse_variables">
+                                <a data-toggle="collapse" data-parent="#accordions" href="#collapse_variables">
                                     Variable Filter
                                 </a>
                             </h4>
@@ -120,23 +132,6 @@
                                         </select>
                                     </fieldset>
                                 </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="panel-group row" id="accordion_temporal">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion_temporal" href="#collapse_temporal">
-                                    Temporal Filter
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapse_temporal" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                <h1>temporal filter here</h1>
                             </div>
                         </div>
                     </div>
