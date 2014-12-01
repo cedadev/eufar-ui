@@ -397,7 +397,7 @@ window.onload = function () {
             redraw_map(map);
         }
     );
-    
+
     $("#raw_json").click(
         function () {
             req = create_elasticsearch_request(map.getBounds(), full_text, 500);
@@ -412,7 +412,7 @@ window.onload = function () {
             }
         }
     );
-    
+
     $("#file_paths").click(
         function () {
             req = create_elasticsearch_request(map.getBounds(), full_text, 500);
@@ -433,7 +433,7 @@ window.onload = function () {
             }
         }
     );
-    
+
     $("#dl_urls").click(
         function () {
             req = create_elasticsearch_request(map.getBounds(), full_text, 500);
@@ -467,4 +467,10 @@ window.onload = function () {
     );
 
     add_bounds_changed_listener(map);
+
+    // http://stackoverflow.com/a/18537617
+    $('[data-toggle="popover"]').popover({
+        'trigger': 'hover',
+        'placement': 'top'
+    });
 };

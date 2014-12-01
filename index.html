@@ -60,6 +60,8 @@
                                     <fieldset>
                                         <div class="form-group">
                                             <label class="control-label" for="param">Centre Map on Location</label>
+                                            <span data-toggle="popover" data-content="Search by latitude/longitude, postcode, or location name." class="glyphicon glyphicon-question-sign"></span>
+
                                             <div class="buffer10 controls">
                                                 <input id="location" name="location" placeholder="e.g. Poland, or 51.5N 0.13W" class="form-control input-md" type="text">
                                             </div>
@@ -105,6 +107,7 @@
                                     <fieldset>
                                         <div class="form-group">
                                             <label class="control-label" for="param">Keyword Search</label>
+                                            <span data-toggle="popover" data-content="Search for any keyword, e.g.: 'eagle', 'nox', 'photography', etc." class="glyphicon glyphicon-question-sign"></span>
                                             <div class="buffer10 controls">
                                                 <input id="ftext" name="ftext" placeholder="Any text query, e.g. 'velocity', 'safire', etc" class="form-control input-md" type="text">
                                             </div>
@@ -125,9 +128,10 @@
                         </div>
                         <div id="collapse_variables" class="panel-collapse collapse">
                             <div class="panel-body">
-                                <form class="buffer10 form-horizontal">
+                                <form class="buffer10 text-center">
                                     <fieldset>
                                         <label class="control-label" for="param">Variable Name (Document Count)</label>
+                                        <span data-toggle="popover" data-content="A list of words extracted from the variable lists in each file, sorted by freuquency of occurrence. Click a variable to only include files with that variable." class="glyphicon glyphicon-question-sign"></span>
                                         <select id="multiselect" multiple="multiple">
                                         </select>
                                     </fieldset>
