@@ -25,6 +25,15 @@ String.prototype.hashCode = function () {
     return hash;
 };
 
+String.prototype.truncatePath = function (levels) {
+    // Removes 'levels' directories from a path, e.g.:
+    // "/usr/bin/path/to/something/useful".truncatePath(3);
+    //     => "/usr/bin/path
+    parts = this.split("/");
+    t_path = parts.slice(0, parts.length - levels).join("/");
+    return t_path;
+}
+
 // ------------------------------Variable Filter-------------------------------
 function clear_aggregated_variables() {
     select = $("#multiselect").html("");
@@ -204,7 +213,7 @@ function create_info_window(hit) {
     content = "<section><p><strong>Filename: </strong>" + hit.file.filename + "</p>";
     if (hit.temporal) {
         content += "<p><strong>Start Time: </strong>" + hit.temporal.start_time + "</p>" +
-                    "<p><strong>End Time: </strong>" + hit.temporal.end_time + "</p>";
+                   "<p><strong>End Time: </strong>" + hit.temporal.end_time + "</p>";
     }
 
     if (hit.misc.flight_num) {
@@ -215,7 +224,7 @@ function create_info_window(hit) {
         content += "<p><strong>Organisation: </strong>\"" + hit.misc.organisation + "\"</p>";
     }
 
-    content += "<p><a href=\"http://badc.nerc.ac.uk/browse" + hit.file.path + "\">Get data</a></p>";
+    content += "<p><a href=\"http://badc.nerc.ac.uk/browse" + hit.file.path.truncatePath(2) + "\">Get data</a></p>";
     if (hit.data_format.format.search("RAF") > 0) {
         content += "<p><a href=\"" + wps_url + hit.file.path + "\" target=\"_blank\">Plot time-series</a></p>";
     }
