@@ -143,7 +143,7 @@ function create_elasticsearch_request(gmaps_corners, full_text, size) {
         size: size,
     };
 
-    // Add extra filters from free-text search box
+    // Add other filters from page to query
     tf = request_from_filters(full_text);
     if (tf) {
         for (i = 0; i < tf.length; i += 1) {
@@ -363,7 +363,7 @@ window.onload = function () {
 		$("#mouse").html(lat + ', ' + lon);
 	});
 
-    // Set up buttons
+    //------------------------------- Buttons -------------------------------
     $("#location_search").click(
         function () {
             centre_map(map, geocoder, $("#location").val());
@@ -407,6 +407,7 @@ window.onload = function () {
         }
     );
 
+    //--------------------------- "Export Results" ---------------------------
     $("#raw_json").click(
         function () {
             req = create_elasticsearch_request(map.getBounds(), full_text, 500);
@@ -464,6 +465,7 @@ window.onload = function () {
         }
     );
 
+    //----------------------------- UI Widgets -------------------------------
     $("#multiselect").multiSelect(
         {
             afterSelect: function () {
@@ -475,11 +477,22 @@ window.onload = function () {
         }
     );
 
-    add_bounds_changed_listener(map);
-
+    // Kick off help text popovers
     // http://stackoverflow.com/a/18537617
     $('[data-toggle="popover"]').popover({
         'trigger': 'hover',
         'placement': 'top'
     });
+
+    // Datepicker
+    var picker = $("#datepicker").datepicker({
+        autoclose: true,
+        format: "yyyy-mm-dd",
+        startView: 2
+    });
+
+    $("#datepicker").datepicker("setDate", new Date(2014, 12, 12));
+
+    //---------------------------- Map main loop ------------------------------
+    add_bounds_changed_listener(map);
 };
