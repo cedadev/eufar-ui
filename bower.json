@@ -19,6 +19,7 @@
   "dependencies": {
     "bootstrap": "~3.3.0",
     "datepicker": "eternicode/bootstrap-datepicker",
+    "highcharts": "",
     "jquery": "~2.1.1",
     "multiselect": "~0.9.12"
   }

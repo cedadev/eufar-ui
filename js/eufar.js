@@ -363,6 +363,94 @@ function add_bounds_changed_listener(gmap) {
     });
 }
 
+// ---------------------------------Histogram----------------------------------
+function draw_histogram(request) {
+    ost = request.aggregations.only_sensible_timestamps;
+    buckets = ost.docs_over_time.buckets;
+    keys = [];
+    counts = [];
+    for (i = 0; i < buckets.length; i += 1) {
+        keys.push(buckets[i].key_as_string);
+        counts.push(buckets[i].doc_count);
+    }
+
+    $("#date_histogram").highcharts({
+        chart: {
+            type: "column",
+            height: 200,
+            width: document.getElementById("filter").offsetWidth * 0.75
+        },
+        title: {
+            text: ""
+        },
+        xAxis: {
+            categories: keys,
+            labels: {
+                step: 6,
+                rotation: 270,
+                useHTML: true
+            }
+        },
+        yAxis: {
+            title: {
+                text: null
+            },
+            type: "logarithmic"
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            column: {
+                borderWidth: 0,
+                groupPadding: 0,
+                pointPadding: 0
+            }
+        },
+        series: [{
+            name: "Number of documents",
+            data: counts
+        }]
+    });
+}
+
+function send_histogram_request() {
+    req = {
+        "aggs": {
+            "only_sensible_timestamps": {
+                "filter": {
+                    "range": {
+                        "temporal.start_time": {
+                            "gt": "2000-01-01"
+                        }
+                    }
+                },
+                "aggs": {
+                    "docs_over_time": {
+                        "date_histogram": {
+                            "field": "start_time",
+                            "format": "MM-yyyy",
+                            "interval": "month",
+                            "min_doc_count": 0
+                        }
+                    }
+                }
+            }
+        },
+        "size": 0
+    };
+
+    xhr = new XMLHttpRequest();
+    xhr.open("POST", es_url, true);
+    xhr.send(JSON.stringify(req));
+    xhr.onload = function (e) {
+        if (xhr.readyState === 4) {
+            response = JSON.parse(xhr.responseText);
+            draw_histogram(response);
+        }
+    };
+}
+
 // ------------------------------window.onload---------------------------------
 window.onload = function () {
     var geocoder, lat, lon, map;
@@ -516,7 +604,8 @@ window.onload = function () {
         startView: 2
     });
 
-    $("#datepicker").datepicker("setDate", new Date(2014, 12, 12));
+    // Draw histogram
+    send_histogram_request();
 
     //---------------------------- Map main loop ------------------------------
     add_bounds_changed_listener(map);
