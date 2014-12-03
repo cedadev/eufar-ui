@@ -158,6 +158,29 @@ function create_elasticsearch_request(gmaps_corners, full_text, size) {
         }
     }
 
+    temporal = {
+        range: {
+            "temporal.start_time": {
+                to: null,
+                from: null
+            }
+        }
+    };
+    start_time = $("#start_time").val();
+    if (start_time !== "") {
+        temporal.range["temporal.start_time"].from = start_time;
+    }
+
+    end_time = $("#end_time").val();
+    if (end_time !== "") {
+        temporal.range["temporal.start_time"].to = end_time;
+    }
+
+    if (temporal.range["temporal.start_time"].to !== null &&
+            temporal.range["temporal.start_time"].from !== null) {
+        request.filter.and.must.push(temporal);
+    }
+
     return request;
 }
 
@@ -400,6 +423,8 @@ window.onload = function () {
 
     $("#clearfil").click(
         function () {
+            $("#start_time").val("");
+            $("#end_time").val("");
             $("#ftext").val("");
             clear_aggregated_variables();
             cleanup();
