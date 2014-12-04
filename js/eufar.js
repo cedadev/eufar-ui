@@ -106,25 +106,25 @@ function create_elasticsearch_request(gmaps_corners, full_text, size) {
 
     // ElasticSearch request
     request = {
-        _source: {
-            include: [
+        "_source": {
+            "include": [
                 "data_format.format",
                 "file.filename",
                 "file.path",
                 "misc",
                 "spatial.geometries.summary",
                 "temporal"
-            ]
+                    ]
         },
-        filter: {
-            and: {
-                must: [
+        "filter": {
+            "and": {
+                "must": [
                     {
-                        geo_shape: {
-                            bbox: {
-                                shape: {
-                                    type: "envelope",
-                                    coordinates: [nw, se]
+                        "geo_shape": {
+                            "bbox": {
+                                "shape": {
+                                    "type": "envelope",
+                                    "coordinates": [nw, se]
                                 }
                             }
                         }
@@ -132,16 +132,28 @@ function create_elasticsearch_request(gmaps_corners, full_text, size) {
                 ]
             }
         },
-        aggs: {
-            variables: {
-                terms: {
-                    field: "value",
-                    size: 30
+        "aggs": {
+            "variables": {
+                "terms": {
+                    "field": "value",
+                    "size": 30
                 }
             }
         },
-        size: size,
+        "size": size
     };
+
+    no_photography = {
+       "not": {
+           "term": {
+               "file.path": "photography"
+           }
+       }
+    };
+
+    if (! $("#photography_checkbox").prop("checked")) {
+        request.filter.and.must.push(no_photography);
+    }
 
     // Add other filters from page to query
     tf = request_from_filters(full_text);
@@ -196,6 +208,7 @@ function send_elasticsearch_request(gmap, full_text) {
     xhr.onload = function (e) {
         if (xhr.readyState === 4) {
             response = JSON.parse(xhr.responseText);
+            console.log(JSON.stringify(response, null, "    "));
             if (response.hits) {
                 $("#resptime").html(response.took);
                 $("#numresults").html(response.hits.total);
@@ -606,6 +619,11 @@ window.onload = function () {
 
     // Draw histogram
     send_histogram_request();
+
+    // "Include photography" checkbox
+    $("#photography_checkbox").change(function () {
+        redraw_map(map);
+    });
 
     //---------------------------- Map main loop ------------------------------
     add_bounds_changed_listener(map);
