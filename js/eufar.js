@@ -358,21 +358,23 @@ function cleanup() {
     info_windows = [];
 }
 
-function redraw_map(gmap) {
+function redraw_map(gmap, add_listener) {
     cleanup();
 
     // Draw flight tracks
     full_text = $("#ftext").val();
     send_elasticsearch_request(gmap, full_text);
 
-    window.setTimeout(function () {
-        add_bounds_changed_listener(gmap);
-    }, 500);
+    if (add_listener) {
+        window.setTimeout(function () {
+            add_bounds_changed_listener(gmap);
+        }, 500);
+    }
 }
 
 function add_bounds_changed_listener(gmap) {
     google.maps.event.addListenerOnce(gmap, "bounds_changed", function () {
-        redraw_map(gmap);
+        redraw_map(gmap, true);
     });
 }
 
@@ -499,7 +501,7 @@ window.onload = function () {
             var charcode = e.charCode || e.keyCode || e.which;
             if (charcode === 13) {
                 cleanup();
-                redraw_map(map);
+                redraw_map(map, false);
                 return false;
             }
         }
@@ -518,7 +520,7 @@ window.onload = function () {
     $("#applyfil").click(
         function () {
             cleanup();
-            redraw_map(map);
+            redraw_map(map, false);
         }
     );
 
@@ -529,7 +531,7 @@ window.onload = function () {
             $("#ftext").val("");
             clear_aggregated_variables();
             cleanup();
-            redraw_map(map);
+            redraw_map(map, false);
         }
     );
 
@@ -595,10 +597,10 @@ window.onload = function () {
     $("#multiselect").multiSelect(
         {
             afterSelect: function () {
-                redraw_map(map);
+                redraw_map(map, false);
             },
             afterDeselect: function () {
-                redraw_map(map);
+                redraw_map(map, false);
             },
         }
     );
@@ -622,7 +624,7 @@ window.onload = function () {
 
     // "Include photography" checkbox
     $("#photography_checkbox").change(function () {
-        redraw_map(map);
+        redraw_map(map, false);
     });
 
     //---------------------------- Map main loop ------------------------------
