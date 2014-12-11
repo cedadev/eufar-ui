@@ -199,7 +199,7 @@ function create_elasticsearch_request(gmaps_corners, full_text, size) {
 function send_elasticsearch_request(gmap, full_text) {
     var xhr, request, response;
 
-    request = create_elasticsearch_request(gmap.getBounds(), full_text, 100);
+    request = create_elasticsearch_request(gmap.getBounds(), full_text, 300);
 
     // Construct and send XMLHttpRequest
     xhr = new XMLHttpRequest();
