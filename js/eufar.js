@@ -78,7 +78,7 @@ function update_export_results_modal(hits) {
 }
 
 // -------------------------------ElasticSearch--------------------------------
-var es_url = "http://fatcat-test.jc.rl.ac.uk:9200/badc/eufar/_search";
+var es_url = "http://fatcat-test.jc.rl.ac.uk/es/badc/eufar/_search";
 function request_from_filters(full_text) {
     var i, req, vars;
 
