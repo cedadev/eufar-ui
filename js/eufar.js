@@ -78,7 +78,20 @@ function update_export_results_modal(hits) {
 }
 
 // -------------------------------ElasticSearch--------------------------------
-var es_url = "http://fatcat-test.jc.rl.ac.uk/es/badc/eufar/_search";
+function get_parameter_by_name(name) {
+    // Function from: http://stackoverflow.com/a/901144
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                           results = regex.exec(location.search);
+    if (! results) {
+        return null;
+    } else {
+        return decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+}
+
+var index = get_parameter_by_name("index") || "badc";
+var es_url = "http://fatcat-test.jc.rl.ac.uk:9200/" + index + "/_search";
 function request_from_filters(full_text) {
     var i, req, vars;
 
