@@ -365,7 +365,7 @@ function redraw_map(gmap, add_listener) {
     full_text = $("#ftext").val();
     send_elasticsearch_request(gmap, full_text);
 
-    if (add_listener) {
+    if (add_listener === true) {
         window.setTimeout(function () {
             add_bounds_changed_listener(gmap);
         }, 500);
