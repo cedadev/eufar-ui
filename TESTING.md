@@ -6,12 +6,12 @@ Markup/Layout
 
 | Functionality | IE | Firefox | Chrome | Opera |
 |---------------|----|---------|--------|-------|
-| Bootstrap fonts/css loading | | YES | | |
-| Layout correct | | YES | | |
-| Concertina elements expand | | YES | | |
-| Concertina elements only open one at a time | | YES | | |
+| Bootstrap fonts/css loading | | YES | YES | |
+| Layout correct | | YES | YES | |
+| Concertina elements expand | | YES | YES | |
+| Concertina elements only open one at a time | | YES | YES | |
 | Documentation | N/A | N/A | N/A | N/A |
-| Help popovers / hover dialogs | | YES | | |
+| Help popovers / hover dialogs | | YES | YES | |
 
 
 Map
@@ -19,14 +19,14 @@ Map
 
 | Functionality | IE | Firefox | Chrome | Opera |
 |---------------|----|---------|--------|-------|
-| Map | | YES | | |
-| Drawing tracks on map | | YES | | |
-| Coordinate tracks only drawn once (regression - used to be drawn 'n' times) | | YES | | |
-| Colours of tracks are persistent | | YES | | |
-| Redoing search and redrawing tracks when map bounds change | | YES | | |
-| Info windows (start/end time, links, file name, etc) | | YES | | |
-| Mouse pointer coordinates update | | YES | | |
-| Geocoder / "centre map on location" functioning | | YES | | |
+| Map | | YES | YES | |
+| Drawing tracks on map | | YES | YES | |
+| Coordinate tracks only drawn once (regression - used to be drawn 'n' times) | | YES | YES | |
+| Colours of tracks are persistent | | YES | YES | |
+| Redoing search and redrawing tracks when map bounds change | | YES | YES | |
+| Info windows (start/end time, links, file name, etc) | | YES | YES | |
+| Mouse pointer coordinates update | | YES | YES | |
+| Geocoder / "centre map on location" functioning | | YES | YES | |
 
 
 Filters/Elasticsearch Client-Side
@@ -34,12 +34,12 @@ Filters/Elasticsearch Client-Side
 
 | Functionality | IE | Firefox | Chrome | Opera |
 |---------------|----|---------|--------|-------|
-| Date range filter | | YES | | |
-| Date histogram | | YES | | |
-| Keyword search | | YES | | |
-| Variable filter aggregation | | YES | | |
-| Photography filter checkbox | | YES | | |
-| 'Hits' and 'Response time' elements working | | YES | | |
+| Date range filter | | YES | YES | |
+| Date histogram | | YES | YES | |
+| Keyword search | | YES | YES | |
+| Variable filter aggregation | | YES | YES | |
+| Photography filter checkbox | | YES | YES | |
+| 'Hits' and 'Response time' elements working | | YES | YES | |
 
 
 Export Results
@@ -47,9 +47,9 @@ Export Results
 
 | Functionality | IE | Firefox | Chrome | Opera |
 |---------------|----|---------|--------|-------|
-| Raw JSON | | YES | | |
-| File paths | | YES | | |
-| File download URLs | | YES | | |
+| Raw JSON | | YES | YES (but slow) | |
+| File paths | | YES | YES | |
+| File download URLs | | YES | YES | |
 
 
 Searching
