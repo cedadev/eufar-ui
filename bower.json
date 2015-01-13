@@ -1,9 +1,9 @@
 {
   "name": "eufar-ui",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "homepage": "https://github.com/cedadev/eufar-ui",
   "authors": [
-    "Charles Newey <charlie@assemblyco.de>"
+    "Charles Newey <charles.newey@stfc.ac.uk>"
   ],
   "description": "Web interface for the EUFAR metadata search system",
   "main": "js/eufar.js",
@@ -19,7 +19,7 @@
   "dependencies": {
     "bootstrap": "~3.3.0",
     "datepicker": "eternicode/bootstrap-datepicker",
-    "highcharts": "",
+    "highcharts": "http://code.highcharts.com/highcharts.js",
     "jquery": "~2.1.1",
     "multiselect": "~0.9.12"
   }
