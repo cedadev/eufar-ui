@@ -1,0 +1,7 @@
+site_name: EUFAR Flight Finder Docs
+pages:
+    - [index.md, Home]
+    - [style.md, Coding Style]
+    - [eufar_js.md, EUFAR.js]
+    - [about.md, About]
+theme: readthedocs
