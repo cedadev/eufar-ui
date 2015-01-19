@@ -195,7 +195,7 @@ function createElasticsearchRequest(gmaps_corners, full_text, size) {
             }
         }
     };
-    
+
     start_time = $('#start_time').val();
     if (start_time !== '') {
         temporal.range['temporal.start_time'].from = start_time;
@@ -267,27 +267,36 @@ function createInfoWindow(hit) {
     hit = hit._source;
     content = '<section><p><strong>Filename: </strong>' +
               hit.file.filename + '</p>';
-    
+
     if (hit.temporal) {
-        content += '<p><strong>Start Time: </strong>' + 
+        content += '<p><strong>Start Time: </strong>' +
                    hit.temporal.start_time + '</p>' +
                    '<p><strong>End Time: </strong>' +
                    hit.temporal.end_time + '</p>';
     }
 
-    if (hit.misc.flight_num) {
-        content += '<p><strong>Flight Num: </strong>"' +
-                   hit.misc.flight_num + '"</p>';
+    if (hit.misc.flight_info) {
+        if (hit.misc.flight_info.flight_num) {
+            content += '<p><strong>Flight Num: </strong>"' +
+                       hit.misc.flight_info.flight_num + '"</p>';
+        }
+
+        if (hit.misc.flight_info.organisation) {
+            content += '<p><strong>Organisation: </strong>"' +
+                       hit.misc.flight_info.organisation + '"</p>';
+        }
     }
 
-    if (hit.misc.organisation) {
-        content += '<p><strong>Organisation: </strong>"' +
-                   hit.misc.organisation + '"</p>';
+    if (hit.misc.instrument) {
+        if (hit.misc.instrument.instrument) {
+            content += '<p><strong>Instrument: </strong>"' +
+                       hit.misc.instrument.instrument + '"</p>';
+        }
     }
 
     content += '<p><a href="http://badc.nerc.ac.uk/browse' +
                hit.file.path.truncatePath(2) + '">Get data</a></p>';
-    
+
     if (hit.data_format.format.search('RAF') > 0) {
         content += '<p><a href="' + WPS_URL + hit.file.path +
                    '" target="_blank">Plot time-series</a></p>';
@@ -357,7 +366,7 @@ function drawFlightTracks(gmap, hits) {
             (function (i, e) {
                 return function (e) {
                     var j;
-                    
+
                     google.maps.event.clearListeners(gmap, 'bounds_changed');
 
                     for (j = 0; j < info_windows.length; j += 1) {
@@ -391,7 +400,7 @@ function cleanup() {
 
 function redrawMap(gmap, add_listener) {
     var full_text;
-    
+
     cleanup();
 
     // Draw flight tracks
@@ -414,7 +423,7 @@ function addBoundsChangedListener(gmap) {
 // ---------------------------------Histogram----------------------------------
 function drawHistogram(request) {
     var ost, buckets, keys, counts, i;
-    
+
     ost = request.aggregations.only_sensible_timestamps;
     buckets = ost.docs_over_time.buckets;
     keys = [];
@@ -466,7 +475,7 @@ function drawHistogram(request) {
 
 function sendHistogramRequest() {
     var req, response, xhr;
-    
+
     req = {
         'aggs': {
             'only_sensible_timestamps': {
@@ -576,7 +585,7 @@ window.onload = function () {
     $('#raw_json').click(
         function () {
             var full_text, req, response, xhr;
-            
+
             req = createElasticsearchRequest(map.getBounds(), full_text, 500);
             xhr = new XMLHttpRequest();
             xhr.open('POST', ES_URL, true);
@@ -593,7 +602,7 @@ window.onload = function () {
     $('#file_paths').click(
         function () {
             var full_text, h, i, req, response, xhr;
-            
+
             req = createElasticsearchRequest(map.getBounds(), full_text, 500);
             xhr = new XMLHttpRequest();
             xhr.open('POST', ES_URL, true);
@@ -616,7 +625,7 @@ window.onload = function () {
     $('#dl_urls').click(
         function () {
             var full_text, h, i, req, response, xhr;
-            
+
             req = createElasticsearchRequest(map.getBounds(), full_text, 500);
             xhr = new XMLHttpRequest();
             xhr.open('POST', ES_URL, true);
