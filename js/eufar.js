@@ -214,10 +214,8 @@ function createElasticsearchRequest(gmaps_corners, full_text, size) {
     return request;
 }
 
-function sendElasticsearchRequest(gmap, full_text) {
+function sendElasticsearchRequest(request, callback, gmap) {
     var xhr, request, response;
-
-    request = createElasticsearchRequest(gmap.getBounds(), full_text, 300);
 
     // Construct and send XMLHttpRequest
     xhr = new XMLHttpRequest();
@@ -226,19 +224,58 @@ function sendElasticsearchRequest(gmap, full_text) {
     xhr.onload = function (e) {
         if (xhr.readyState === 4) {
             response = JSON.parse(xhr.responseText);
-            if (response.hits) {
-                $('#resptime').html(response.took);
-                $('#numresults').html(response.hits.total);
 
-                drawFlightTracks(gmap, response.hits.hits);
-            }
-
-            if (response.aggregations) {
-                displayAggregatedVariables(response.aggregations);
+            if (gmap) {
+                callback(response, gmap);
+            } else {
+                callback(response);
             }
         }
     };
 }
+
+function updateMap(response, gmap) {
+    if (response.hits) {
+        // Update "hits" and "response time" fields
+        $('#resptime').html(response.took);
+        $('#numresults').html(response.hits.total);
+
+        // Draw flight tracks on a map
+        drawFlightTracks(gmap, response.hits.hits);
+    }
+
+    if (response.aggregations) {
+        // Generate variable aggregation on map and display
+        displayAggregatedVariables(response.aggregations);
+    }
+}
+
+function updateRawJSON(response) {
+    updateExportResultsModal(response.hits.hits);
+}
+
+function updateFilePaths(response) {
+    var h = response.hits.hits;
+
+    var paths = [];
+    for (i = 0; i < h.length; i += 1) {
+        paths.push(h[i]._source.file.path);
+    }
+
+    updateExportResultsModal(paths);
+}
+
+function updateDownloadPaths(response) {
+    var h = response.hits.hits;
+
+    var paths = [];
+    for (i = 0; i < h.length; i += 1) {
+        paths.push('http://badc.nerc.ac.uk/browse' + h[i]._source.file.path);
+    }
+
+    updateExportResultsModal(paths);
+}
+
 
 // -----------------------------------Map--------------------------------------
 var flight_tracks = [];
@@ -405,7 +442,8 @@ function redrawMap(gmap, add_listener) {
 
     // Draw flight tracks
     full_text = $('#ftext').val();
-    sendElasticsearchRequest(gmap, full_text);
+    request = createElasticsearchRequest(gmap.getBounds(), full_text, 300);
+    sendElasticsearchRequest(request, updateMap, gmap);
 
     if (add_listener === true) {
         window.setTimeout(function () {
@@ -584,64 +622,27 @@ window.onload = function () {
     //--------------------------- 'Export Results' ---------------------------
     $('#raw_json').click(
         function () {
-            var full_text, req, response, xhr;
-
-            req = createElasticsearchRequest(map.getBounds(), full_text, 500);
-            xhr = new XMLHttpRequest();
-            xhr.open('POST', ES_URL, true);
-            xhr.send(JSON.stringify(req));
-            xhr.onload = function (e) {
-                if (xhr.readyState === 4) {
-                    response = JSON.parse(xhr.responseText);
-                    updateExportResultsModal(response.hits.hits);
-                }
-            };
+            var req;
+            req = createElasticsearchRequest(map.getBounds(), $('#ftext').val(), 100);
+            sendElasticsearchRequest(req, updateRawJSON);
         }
     );
 
+
+
     $('#file_paths').click(
         function () {
-            var full_text, h, i, req, response, xhr;
-
-            req = createElasticsearchRequest(map.getBounds(), full_text, 500);
-            xhr = new XMLHttpRequest();
-            xhr.open('POST', ES_URL, true);
-            xhr.send(JSON.stringify(req));
-            xhr.onload = function (e) {
-                if (xhr.readyState === 4) {
-                    response = JSON.parse(xhr.responseText);
-                    h = response.hits.hits;
-
-                    var paths = [];
-                    for (i = 0; i < h.length; i += 1) {
-                        paths.push(h[i]._source.file.path);
-                    }
-                    updateExportResultsModal(paths);
-                }
-            };
+            var req;
+            sendElasticsearchRequest(req, updateFilePaths);
+            req = createElasticsearchRequest(map.getBounds(), $('#ftext').val(), 100);
         }
     );
 
     $('#dl_urls').click(
         function () {
-            var full_text, h, i, req, response, xhr;
-
-            req = createElasticsearchRequest(map.getBounds(), full_text, 500);
-            xhr = new XMLHttpRequest();
-            xhr.open('POST', ES_URL, true);
-            xhr.send(JSON.stringify(req));
-            xhr.onload = function (e) {
-                if (xhr.readyState === 4) {
-                    response = JSON.parse(xhr.responseText);
-                    h = response.hits.hits;
-
-                    var paths = [];
-                    for (i = 0; i < h.length; i += 1) {
-                        paths.push('http://badc.nerc.ac.uk/browse' + h[i]._source.file.path);
-                    }
-                    updateExportResultsModal(paths);
-                }
-            };
+            var req;
+            sendElasticsearchRequest(req, updateDownloadPaths);
+            req = createElasticsearchRequest(map.getBounds(), $('#ftext').val(), 100);
         }
     );
 
