@@ -15,12 +15,20 @@ textarea {
     min-height: 100px;
 }
 
-.buffer10 {
-    padding-top: 10px;
+div .wide {
+    width: 100%;
 }
 
-.buffer30 {
-    padding-top: 30px;
+div .logo {
+    max-height: 8vh;
+    max-width: 45%;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.pad {
+    padding-left: 3vw;
+    padding-right: 3vw;
 }
 
 .form-horizontal {
@@ -32,19 +40,23 @@ textarea {
 #main {
     width: 100%;
     height: 100%;
-    position: relative;
+}
+
+#sidebar {
+    position: relative; 
+    max-height: 100%;
 }
 
 #map {
-    height: 100%;
+    height: 100vh;
 }
 
 #filter {
     padding-top: 10px;
     padding-left: 27px;
     padding-right: 27px;
-    height: 100%;
-    width: 27.5%;
     min-width: 300px;
+    width: 27.5%;
+    max-height: 600px;
     float: left;
 }

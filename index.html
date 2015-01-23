@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    <title>EUFAR Map Data Visualisation Tool</title>
+    <title>EUFAR Flight Finder</title>
 
     <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap-theme.min.css" type="text/css" />
@@ -23,13 +23,13 @@
                     <h4 class="modal-title" id="export_modal_label">Export Results</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="buffer10 text-center">
+                    <div class="text-center">
                         <p><b>Note</b>: Only the first 500 results will be returned.</p>
                         <button type="button" class="btn" id="raw_json">Raw JSON</button>
                         <button type="button" class="btn" id="file_paths">File Paths</button>
                         <button type="button" class="btn" id="dl_urls">Download URLs</button>
                     </div>
-                    <div class="buffer30">
+                    <div>
                         <textarea id="results" placeholder="Results will appear here..."></textarea>
                     </div>
                 </div>
@@ -42,10 +42,19 @@
     <div id="main">
         <div id="sidebar">
             <div id="filter">
-              <h2>Refine Search</h2>
-              <p>Click an item to expand the panel.</p>
+                <div class="wide text-center">
+                    <a href="http://www.eufar.net/" alt="EUFAR Website">
+                        <img class="logo" src="./img/eufar.png" alt="EUFAR logo"></img>
+                    </a>
+                    <a href="http://www.ceda.ac.uk/" alt="CEDA Website">
+                        <img class="logo" src="./img/ceda.png" alt="CEDA logo"></img>
+                    </a>
+                </div>
+                <h2>EUFAR Flight Finder</h2>
+                <p>Search for flights within the EUFAR archive using the parameters below. Refine your search with geographical, temporal, and text search terms.</p>
               <hr />
-                <div class="buffer10"></div>
+                <div></div>
+                <p>Click an item to expand the panel.</p>
                 <div class="panel-group" id="accordions">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -63,7 +72,7 @@
                                             <label class="control-label" for="param">Centre Map on Location</label>
                                             <span data-toggle="popover" data-content="Search by latitude/longitude, postcode, or location name." class="glyphicon glyphicon-question-sign"></span>
 
-                                            <div class="buffer10 controls">
+                                            <div class="controls">
                                                 <input id="location" name="location" placeholder="e.g. Poland, or 51.5N 0.13W" class="form-control input-md" type="text">
                                             </div>
                                         </div>
@@ -89,13 +98,14 @@
                         </div>
                         <div id="collapse_temporal" class="panel-collapse collapse">
                             <div class="text-center panel-body">
-                                <label class="control-label">Restrict Search via Time Range</label>
-                                <span data-toggle="popover" data-content="Choose a start and end time to restrict the search by." class="glyphicon glyphicon-question-sign"></span>
-                                <div class="buffer10 input-daterange input-group" id="datepicker">
+                                <label class="control-label">Refine Search via Time Range</label>
+                                <span data-toggle="popover" data-content="Choose a start and end time to refine the search by." class="glyphicon glyphicon-question-sign"></span>
+                                <div class="input-daterange input-group" id="datepicker">
                                     <input id="start_time" type="text" class="input-sm form-control" name="start" />
                                     <span class="input-group-addon">to</span>
                                     <input id="end_time" type="text" class="input-sm form-control" name="end" />
                                 </div>
+                                <span data-toggle="popover" data-content="Please note: Histogram does not change when filters are applied." class="glyphicon glyphicon-question-sign"></span>
                                 <div id="date_histogram"></div>
                             </div>
                         </div>
@@ -116,7 +126,7 @@
                                         <div class="form-group">
                                             <label class="control-label" for="param">Keyword Search</label>
                                             <span data-toggle="popover" data-content="Search for any keyword, e.g.: 'eagle', 'nox', 'photography', etc." class="glyphicon glyphicon-question-sign"></span>
-                                            <div class="buffer10 controls">
+                                            <div class="controls">
                                                 <input id="ftext" name="ftext" placeholder="Any text query, e.g. 'velocity', 'safire', etc" class="form-control input-md" type="text">
                                             </div>
                                         </div>
@@ -136,7 +146,7 @@
                         </div>
                         <div id="collapse_variables" class="panel-collapse collapse">
                             <div class="panel-body">
-                                <form class="buffer10 text-center">
+                                <form class="text-center">
                                     <fieldset>
                                         <label class="control-label" for="param">Variable Name (Document Count)</label>
                                         <span data-toggle="popover" data-content="A list of words extracted from the variable lists in each file, sorted by freuquency of occurrence. Click a variable to only include files with that variable." class="glyphicon glyphicon-question-sign"></span>
@@ -149,20 +159,20 @@
                     </div>
                 </div>
 
-                <div class="buffer10 checkbox">
+                <div class="checkbox">
                     <label>
-                        <input id="photography_checkbox" type="checkbox"> Include photography?
+                        <input id="photography_checkbox" type="checkbox">Include photography?</input>
                     </label>
                 </div>
 
-                <div class="form-group text-center buffer10">
+                <div class="form-group text-center">
                     <div class="controls">
                         <button type="button" id="applyfil" class="btn btn-success">Apply Filters</button>
                         <button type="button" id="clearfil" class="btn btn-danger">Clear Filters</button>
                     </div>
                 </div>
 
-                <div class="form-group buffer10">
+                <div class="form-group">
                     <legend>Search info</legend>
                     <p class="form-group row">
                         <strong><span id="numresults">0</span></strong> hits with current selection.
@@ -172,7 +182,7 @@
                         <strong><span id="resptime">0</span></strong> milliseconds for response.
                     </p>
 
-                    <div class="form-group row buffer10">
+                    <div class="form-group row">
                         <p><strong>Mouse: </strong> <span id="mouse">123.123, 456.456</span></p>
                     </div>
                     <hr />
