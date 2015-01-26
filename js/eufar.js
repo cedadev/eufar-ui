@@ -15,7 +15,7 @@ function getParameterByName(name) {
 
 // Window constants
 var INDEX = getParameterByName('index') || 'eufar';
-var ES_URL = 'http://fatcat-test.jc.rl.ac.uk:9200/' + INDEX + '/_search';
+var ES_URL = 'http://fatcat-test.jc.rl.ac.uk/es/' + INDEX + '/_search';
 var WPS_URL = 'http://ceda-wps2.badc.rl.ac.uk:8080/submit/form?proc_id=PlotTimeSeries&FilePath=';
 var TRACK_COLOURS = [
     '#4D4D4D', '#5DA5DA', '#FAA43A',
