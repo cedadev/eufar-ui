@@ -47,9 +47,9 @@ Export Results
 
 | Functionality | IE | Firefox | Chrome | Safari |
 |---------------|----|---------|--------|-------|
-| Raw JSON | | YES | YES (but slow) | NO |
-| File paths | | YES | YES | NO |
-| File download URLs | | YES | YES | NO |
+| Raw JSON | | YES | YES | YES |
+| File paths | | YES | YES | YES |
+| File download URLs | | YES | YES | YES |
 
 Safari error: `undefined is not an object (evaluating 'full_text.length')`
 
