@@ -1,0 +1,4 @@
+site_name: EUFAR Flight Finder Docs
+pages:
+    - [index.md, Home]
+theme: readthedocs
