@@ -189,10 +189,7 @@ function createElasticsearchRequest(gmaps_corners, full_text, size) {
 
     temporal = {
         range: {
-            'temporal.start_time': {
-                to: null,
-                from: null
-            }
+            'temporal.start_time': {}
         }
     };
 
@@ -206,7 +203,7 @@ function createElasticsearchRequest(gmaps_corners, full_text, size) {
         temporal.range['temporal.start_time'].to = end_time;
     }
 
-    if (temporal.range['temporal.start_time'].to !== null &&
+    if (temporal.range['temporal.start_time'].to !== null ||
             temporal.range['temporal.start_time'].from !== null) {
         request.filter.and.must.push(temporal);
     }
