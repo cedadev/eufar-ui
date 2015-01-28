@@ -157,23 +157,28 @@
                             </div>
                         </div>
                     </div>
+                    <div class="checkbox">
+                        <label>
+                            <input id="photography_checkbox" type="checkbox">Include photography?</input>
+                        </label>
+                    </div>
                 </div>
 
-                <div class="checkbox">
-                    <label>
-                        <input id="photography_checkbox" type="checkbox">Include photography?</input>
-                    </label>
-                </div>
-
+                
+    
                 <div class="form-group text-center">
                     <div class="controls">
                         <button type="button" id="applyfil" class="btn btn-success">Apply Filters</button>
                         <button type="button" id="clearfil" class="btn btn-danger">Clear Filters</button>
+                        
+                        <div class="text-center buffer">
+                            <button type="button" id="export" class="btn" data-toggle="modal" data-target="#export_modal">Export Results</button>
+                        </div>
                     </div>
                 </div>
 
+                <hr />
                 <div class="form-group">
-                    <legend>Search info</legend>
                     <p class="form-group row">
                         <strong><span id="numresults">0</span></strong> hits with current selection.
                     </p>
@@ -184,10 +189,6 @@
 
                     <div class="form-group row">
                         <p><strong>Mouse: </strong> <span id="mouse">123.123, 456.456</span></p>
-                    </div>
-                    <hr />
-                    <div class="text-center">
-                        <button type="button" id="export" class="btn" data-toggle="modal" data-target="#export_modal">Export Results</button>
                     </div>
                 </div>
 

@@ -26,6 +26,10 @@ div .logo {
     margin-right: 10px;
 }
 
+.buffer {
+    margin-top: 10px;
+}
+
 .pad {
     padding-left: 3vw;
     padding-right: 3vw;
