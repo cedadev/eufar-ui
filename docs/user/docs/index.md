@@ -90,6 +90,19 @@ Certain things are done automatically - the Geographical Search and Variable
 Filter are applied without needing to click "Apply Filters".
 
 
+Looking at Your Results
+-----------------------
+
+Each flight track is clickable and will bring up an information dialogue when
+selected. This will provide some basic information about each individual file
+including a link to the BADC archive to download the data, the recorded start
+and end time for the data, the file name, the organisation ID and flight
+number.
+
+
+Getting Your Results
+--------------------
+
 ### Export Results
 
 This dialogue box will help you export any search hits you may have for a

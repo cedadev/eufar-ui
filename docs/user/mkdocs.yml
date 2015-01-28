@@ -2,4 +2,4 @@ site_name: EUFAR Flight Finder Docs
 pages:
     - [index.md, Home]
     - [troubleshooting.md, Troubleshooting]
-theme: readthedocs
+theme: mkdocs
