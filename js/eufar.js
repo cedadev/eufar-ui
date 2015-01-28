@@ -642,6 +642,12 @@ window.onload = function () {
             req = createElasticsearchRequest(map.getBounds(), $('#ftext').val(), 100);
         }
     );
+    
+    $('#export_modal_close').click(
+        function () {
+            updateExportResultsModal(null);
+        }
+    );
 
     //----------------------------- UI Widgets -------------------------------
     $('#multiselect').multiSelect(
