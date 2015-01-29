@@ -19,7 +19,7 @@
   "dependencies": {
     "bootstrap": "~3.3.0",
     "datepicker": "eternicode/bootstrap-datepicker",
-    "geojson": "JasonSanford/geojson-google-maps",
+    "geojson": "charlienewey/geojson-google-maps",
     "highcharts": "http://code.highcharts.com/highcharts.js",
     "jquery": "~2.1.1",
     "multiselect": "~0.9.12"
