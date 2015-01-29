@@ -1,5 +1,7 @@
 site_name: EUFAR Flight Finder Docs
 pages:
     - [index.md, Home]
+    - [refine.md, Refine Search]
+    - [export.md, Export Results]
     - [troubleshooting.md, Troubleshooting]
 theme: mkdocs
