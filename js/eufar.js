@@ -275,7 +275,7 @@ function updateDownloadPaths(response) {
 
 
 // -----------------------------------Map--------------------------------------
-var flight_tracks = [];
+var geometries = [];
 var info_windows = [];
 
 function centreMap(gmap, geocoder, loc) {
@@ -354,49 +354,29 @@ function drawFlightTracks(gmap, hits) {
     for (i = 0; i < hits.length; i += 1) {
         hit = hits[i];
 
-        // Construct flight track (flipping coordinates in the process)
-        coords = hit._source.spatial.geometries.summary.coordinates;
-        corrected_coords = [];
-        for (j = 0; j < coords.length; j += 1) {
-            corrected_coords.push(
-                new google.maps.LatLng(coords[j][1], coords[j][0])
-            );
-        }
-
         colour_index = (hit._id.hashCode() % TRACK_COLOURS.length);
         if (colour_index < 0) {
             colour_index = -colour_index;
         }
 
-        if (corrected_coords.length > 1) {
-            // Construct and display track
-            track = new google.maps.Polyline({
-                path: corrected_coords,
-                geodesic: false,
-                strokeColor: TRACK_COLOURS[colour_index],
-                strokeWeight: 5,
-                strokeOpacity: 0.6
-            });
-            track.setMap(gmap);
-            flight_tracks.push(track);
-        } else {
-            marker = new google.maps.Marker({
-                position: corrected_coords[0],
-                icon: './img/camera.png'
-            });
-            marker.setMap(gmap);
-            flight_tracks.push(marker);
-        }
+        var options = {
+            strokeColor: TRACK_COLOURS[colour_index],
+            strokeWeight: 5,
+            strokeOpacity: 0.6
+        };
+
+        // Create GeoJSON object
+        var geom = GeoJSON(hit._source.spatial.geometries.summary, options);
+        geom.setMap(gmap);
+        geometries.push(geom);
 
         // Construct info window
         info_window = createInfoWindow(hit);
-
-        // Add to lists
         info_windows.push(info_window);
     }
 
-    for (i = 0; i < flight_tracks.length; i += 1) {
-        google.maps.event.addListener(flight_tracks[i], 'click',
+    for (i = 0; i < geometries.length; i += 1) {
+        google.maps.event.addListener(geometries[i], 'click',
             (function (i, e) {
                 return function (e) {
                     var j;
@@ -414,17 +394,18 @@ function drawFlightTracks(gmap, hits) {
                         addBoundsChangedListener(gmap);
                     }, 500);
                 };
-            })(i));
+            }
+        )(i));
     }
 }
 
 function cleanup() {
     var i;
 
-    for (i = 0; i < flight_tracks.length; i += 1) {
-        flight_tracks[i].setMap(null);
+    for (i = 0; i < geometries.length; i += 1) {
+        geometries[i].setMap(null);
     }
-    flight_tracks = [];
+    geometries = [];
 
     for (i = 0; i < info_windows.length; i += 1) {
         info_windows[i].close();
@@ -624,8 +605,6 @@ window.onload = function () {
             sendElasticsearchRequest(req, updateRawJSON);
         }
     );
-
-
 
     $('#file_paths').click(
         function () {
