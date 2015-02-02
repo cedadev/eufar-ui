@@ -14,6 +14,7 @@ function getParameterByName(name) {
 }
 
 // Window constants
+var REQUEST_SIZE = 150;
 var INDEX = getParameterByName('index') || 'eufar';
 var ES_URL = 'http://fatcat-test.jc.rl.ac.uk/es/' + INDEX + '/_search';
 var WPS_URL = 'http://ceda-wps2.badc.rl.ac.uk:8080/submit/form?proc_id=PlotTimeSeries&FilePath=';
@@ -366,7 +367,18 @@ function drawFlightTracks(gmap, hits) {
         };
 
         // Create GeoJSON object
-        var geom = GeoJSON(hit._source.spatial.geometries.summary, options);
+        var geom;
+        var summary = hit._source.spatial.geometries.summary;
+        if (summary.coordinates.length > 1) {
+            geom = GeoJSON(summary, options);
+        } else {
+            var ll = summary.coordinates[0];
+            geom = new google.maps.Marker({
+                position: {lat: ll[1], lng: ll[0]},
+                icon: "./img/camera.png"
+            });
+        }
+
         geom.setMap(gmap);
         geometries.push(geom);
 
@@ -420,7 +432,7 @@ function redrawMap(gmap, add_listener) {
 
     // Draw flight tracks
     full_text = $('#ftext').val();
-    request = createElasticsearchRequest(gmap.getBounds(), full_text, 300);
+    request = createElasticsearchRequest(gmap.getBounds(), full_text, REQUEST_SIZE);
     sendElasticsearchRequest(request, updateMap, gmap);
 
     if (add_listener === true) {
