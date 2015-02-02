@@ -328,7 +328,7 @@ function createInfoWindow(hit) {
         }
     }
 
-    content += '<p><a href="http://badc.nerc.ac.uk/browse' +
+    content += '<p><a target="_blank" href="http://badc.nerc.ac.uk/browse' +
                hit.file.path.truncatePath(2) + '">Get data</a></p>';
 
     if (hit.data_format.format.search('RAF') > 0) {
@@ -621,7 +621,7 @@ window.onload = function () {
             req = createElasticsearchRequest(map.getBounds(), $('#ftext').val(), 100);
         }
     );
-    
+
     $('#export_modal_close').click(
         function () {
             updateExportResultsModal(null);
