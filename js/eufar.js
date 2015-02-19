@@ -1,5 +1,5 @@
 /*jslint browser: true, devel: true, sloppy: true*/
-/*global google, $*/
+/*global google, $, GeoJSON*/
 
 function getParameterByName(name) {
     // Function from: http://stackoverflow.com/a/901144
@@ -8,13 +8,12 @@ function getParameterByName(name) {
         results = regex.exec(location.search);
     if (!results) {
         return null;
-    } else {
-        return decodeURIComponent(results[1].replace(/\+/g, ' '));
     }
+    return decodeURIComponent(results[1].replace(/\+/g, ' '));
 }
 
 // Window constants
-var REQUEST_SIZE = 150;
+var REQUEST_SIZE = 400;
 var INDEX = getParameterByName('index') || 'eufar';
 var ES_URL = 'http://fatcat-test.jc.rl.ac.uk/es/' + INDEX + '/_search';
 var WPS_URL = 'http://ceda-wps2.badc.rl.ac.uk:8080/submit/form?proc_id=PlotTimeSeries&FilePath=';
@@ -85,9 +84,8 @@ function requestFromMultiselect() {
             });
         }
         return req;
-    } else {
-        return '';
     }
+    return '';
 }
 
 // ---------------------------'Export Results' Modal---------------------------
@@ -97,7 +95,7 @@ function updateExportResultsModal(hits) {
 
 // -------------------------------ElasticSearch--------------------------------
 function requestFromFilters(full_text) {
-    var i, ft, req, vars;
+    var i, ft, req;
 
     req = [];
     if (full_text.length > 0) {
@@ -130,7 +128,7 @@ function createElasticsearchRequest(gmaps_corners, full_text, size) {
                 'file.filename',
                 'file.path',
                 'misc',
-                'spatial.geometries.summary',
+                'spatial.geometries.display',
                 'temporal'
             ]
         },
@@ -139,11 +137,18 @@ function createElasticsearchRequest(gmaps_corners, full_text, size) {
                 'must': [
                     {
                         'geo_shape': {
-                            'bbox': {
+                            'spatial.geometries.search': {
                                 'shape': {
                                     'type': 'envelope',
                                     'coordinates': [nw, se]
                                 }
+                            }
+                        }
+                    },
+                    {
+                        "not": {
+                            "missing": {
+                                "field": "spatial.geometries.display.type"
                             }
                         }
                     }
@@ -164,7 +169,7 @@ function createElasticsearchRequest(gmaps_corners, full_text, size) {
     no_photography = {
         'not': {
             'term': {
-                'file.path': 'photography'
+                'spatial.geometries.display.type': 'point'
             }
         }
     };
@@ -213,13 +218,13 @@ function createElasticsearchRequest(gmaps_corners, full_text, size) {
 }
 
 function sendElasticsearchRequest(request, callback, gmap) {
-    var xhr, request, response;
+    var xhr, response;
 
     // Construct and send XMLHttpRequest
     xhr = new XMLHttpRequest();
     xhr.open('POST', ES_URL, true);
     xhr.send(JSON.stringify(request));
-    xhr.onload = function (e) {
+    xhr.onload = function () {
         if (xhr.readyState === 4) {
             response = JSON.parse(xhr.responseText);
 
@@ -253,9 +258,10 @@ function updateRawJSON(response) {
 }
 
 function updateFilePaths(response) {
-    var h = response.hits.hits;
+    var h, i, paths;
+    h = response.hits.hits;
 
-    var paths = [];
+    paths = [];
     for (i = 0; i < h.length; i += 1) {
         paths.push(h[i]._source.file.path);
     }
@@ -264,9 +270,10 @@ function updateFilePaths(response) {
 }
 
 function updateDownloadPaths(response) {
-    var h = response.hits.hits;
+    var h, i, paths;
+    h = response.hits.hits;
 
-    var paths = [];
+    paths = [];
     for (i = 0; i < h.length; i += 1) {
         paths.push('http://badc.nerc.ac.uk/browse' + h[i]._source.file.path);
     }
@@ -349,8 +356,7 @@ function createInfoWindow(hit) {
 }
 
 function drawFlightTracks(gmap, hits) {
-    var coords, corrected_coords, colour_index,
-        hit, info_window, i, j, marker, track;
+    var colour_index, geom, hit, i, info_window, ll, options, display;
 
     for (i = 0; i < hits.length; i += 1) {
         hit = hits[i];
@@ -360,24 +366,15 @@ function drawFlightTracks(gmap, hits) {
             colour_index = -colour_index;
         }
 
-        var options = {
+        options = {
             strokeColor: TRACK_COLOURS[colour_index],
             strokeWeight: 5,
             strokeOpacity: 0.6
         };
 
         // Create GeoJSON object
-        var geom;
-        var summary = hit._source.spatial.geometries.summary;
-        if (summary.coordinates.length > 1) {
-            geom = GeoJSON(summary, options);
-        } else {
-            var ll = summary.coordinates[0];
-            geom = new google.maps.Marker({
-                position: {lat: ll[1], lng: ll[0]},
-                icon: "./img/camera.png"
-            });
-        }
+        display = hit._source.spatial.geometries.display;
+        geom = GeoJSON(display, options);
 
         geom.setMap(gmap);
         geometries.push(geom);
