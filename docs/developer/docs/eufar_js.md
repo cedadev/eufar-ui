@@ -64,27 +64,16 @@ Displays the most common variable names stored in the Elasticsearch index.
 Nothing
 
 
-## updateExportResultsModal(hits)
-Updates the "export results" modal dialogue box with the results of a search
-request (`hits`), formatted as JSON.
-
-### Parameters
-* `hits` is a variable holding the results of an Elasticsearch search request.
-
-### Returns
-Nothing
-
-
-## requestFromMultiSelect()
-Constructs a partial Elasticsearch request from the selected variables from
-the variable multiselect widget.
+## requestFromMultiselect()
+Generates a partial Elasticsearch request from the variable names contained in
+the "variable select" multiselect box.
 
 ### Parameters
 None
 
 ### Returns
-A partial Elasticsearch request that filters search results based on the
-items selected in a multiselect widget on the page.
+A partial Elasticsearch request containing free-text search parameters for the
+variable names selected in the multiselect element.
 
 e.g. if the variables "altitude" and "velocity" are selected:
 
@@ -101,6 +90,17 @@ e.g. if the variables "altitude" and "velocity" are selected:
                 }
             }
         ]
+
+
+## updateExportResultsModal(hits)
+Updates the "export results" modal dialogue box with the results of a search
+request (`hits`), formatted as JSON.
+
+### Parameters
+* `hits` is a variable holding the results of an Elasticsearch search request.
+
+### Returns
+Nothing
 
 
 ## requestFromFilters(full\_text)
@@ -156,6 +156,40 @@ The request is constructed by `createElasticsearchRequest`.
 This function doesn't return anything - rather, it just calls a number of other
 functions to redraw the flight tracks on the map and update a number of UI
 elements.
+
+
+## updateMap(response, gmap)
+Updates the map and related information panels with the information from an
+Elasticsearch request.
+
+Updates:
+    * "Hits" and "response time" fields
+    * Flight tracks on the map
+    * Variable filter multiselect box
+
+### Parameters
+* `response` is a response from a search request sent to Elasticsearch
+* `gmap` is a reference to a google.maps.Map object.
+
+### Returns
+Nothing
+
+
+## updateRawJSON(response)
+Updates the "export results" modal dialogue with raw JSON from the search
+results.
+
+### Parameters
+* `response` is a response from an Elasticsearch request.
+
+### Returns
+Nothing
+
+
+## updateFilePaths(response)
+
+
+## ------------------------------------------------------------
 
 
 ## centreMap(gmap, geocoder, loc)
