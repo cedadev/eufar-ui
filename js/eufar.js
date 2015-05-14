@@ -1,5 +1,5 @@
 /*jslint browser: true, devel: true, sloppy: true*/
-/*global google, $*/
+/*global google, $, GeoJSON*/
 
 function getParameterByName(name) {
     // Function from: http://stackoverflow.com/a/901144
@@ -337,7 +337,10 @@ function createInfoWindow(hit) {
     }
 
     content += '<p><a target="_blank" href="http://badc.nerc.ac.uk/browse' +
-               hit.file.path.truncatePath(2) + '">Get data</a></p>';
+               hit.file.path + '">Get this data file</a></p>';
+
+    content += '<p><a target="_blank" href="http://badc.nerc.ac.uk/browse' +
+               hit.file.path.truncatePath(2) + '">Get data for this flight</a></p>';
 
     if (hit.data_format.format.search('RAF') > 0) {
         content += '<p><a href="' + WPS_URL + hit.file.path +
@@ -356,7 +359,7 @@ function createInfoWindow(hit) {
 }
 
 function drawFlightTracks(gmap, hits) {
-    var colour_index, geom, hit, i, info_window, ll, options, display;
+    var colour_index, geom, hit, i, info_window, options, display;
 
     for (i = 0; i < hits.length; i += 1) {
         hit = hits[i];
@@ -423,7 +426,7 @@ function cleanup() {
 }
 
 function redrawMap(gmap, add_listener) {
-    var full_text;
+    var full_text, request;
 
     cleanup();
 
@@ -539,7 +542,7 @@ function sendHistogramRequest() {
 
 // ------------------------------window.onload---------------------------------
 window.onload = function () {
-    var geocoder, lat, lon, map, picker;
+    var geocoder, lat, lon, map;
 
     // Google Maps geocoder and map object
     geocoder = new google.maps.Geocoder();
