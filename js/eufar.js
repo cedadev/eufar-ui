@@ -103,7 +103,7 @@ function requestFromFilters(full_text) {
         for (i = 0; i < ft.length; i += 1) {
             req.push({
                 term: {
-                    _all: ft[i]
+                    _all: ft[i].toLowerCase()
                 }
             });
         }
