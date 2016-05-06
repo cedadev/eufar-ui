@@ -517,7 +517,7 @@ function sendHistogramRequest() {
                 'aggs': {
                     'docs_over_time': {
                         'date_histogram': {
-                            'field': 'start_time',
+                            'field': 'temporal.start_time',
                             'format': 'MM-yyyy',
                             'interval': 'month',
                             'min_doc_count': 0
