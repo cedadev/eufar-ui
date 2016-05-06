@@ -158,7 +158,7 @@ function createElasticsearchRequest(gmaps_corners, full_text, size) {
         'aggs': {
             'variables': {
                 'terms': {
-                    'field': 'value',
+                    'field': 'parameters.value',
                     'size': 30
                 }
             }
