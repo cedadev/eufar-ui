@@ -16,7 +16,6 @@ function getParameterByName(name) {
 var REQUEST_SIZE = 400;
 var INDEX = getParameterByName('index') || 'eufar';
 var ES_URL = 'http://jasmin-es1.ceda.ac.uk:9000/' + INDEX + '/_search';
-var WPS_URL = 'http://ceda-wps2.badc.rl.ac.uk:8080/submit/form?proc_id=PlotTimeSeries&FilePath=';
 var TRACK_COLOURS = [
     '#4D4D4D', '#5DA5DA', '#FAA43A',
     '#60BD68', '#F17CB0', '#B2912F',
@@ -340,12 +339,7 @@ function createInfoWindow(hit) {
                hit.file.path + '">Get this data file</a></p>';
 
     content += '<p><a target="_blank" href="http://badc.nerc.ac.uk/browse' +
-               hit.file.path.truncatePath(2) + '">Get data for this flight</a></p>';
-
-    if (hit.data_format.format.search('RAF') > 0) {
-        content += '<p><a href="' + WPS_URL + hit.file.path +
-                   '" target="_blank">Plot time-series</a></p>';
-    }
+               hit.file.path.truncatePath(2) + '">Get data for this flight</a></p>';    
 
     content += '</section>';
     info = new google.maps.InfoWindow(
