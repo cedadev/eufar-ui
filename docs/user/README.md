@@ -5,6 +5,7 @@ Install [mkdocs](https://github.com/tomchristie/mkdocs) and run the following
 command to generate documentation for this project:
 
 ```
+pip install mkdocs==0.10.0   # Do not install newer version
 mkdocs build
 ```
 
